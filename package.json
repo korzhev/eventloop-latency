@@ -1,0 +1,28 @@
+{
+  "name": "eventloop-monitoring",
+  "description": "NodeJS eventloop latency monitor",
+  "version": "1.0.0",
+  "devDependencies": {
+    "mocha": "^2.4.5",
+    "should": "^8.2.2"
+  },
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha --require=should"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/korzhev/eventloop-monitoring.git"
+  },
+  "keywords": [
+    "eventloop",
+    "latency",
+    "monitor",
+    "monitoring"
+  ],
+  "author": "Vladimir Korzhev <amv12dbr9@yandex.ru>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/korzhev/eventloop-latency/issues"
+  }
+}
