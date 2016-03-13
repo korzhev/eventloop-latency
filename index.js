@@ -3,10 +3,10 @@
 const EE = require('events').EventEmitter,
     PID = process.pid;
 
-
 class EventLoopMonitor extends EE {
     /**
      * @param interval - interval between two events "data"
+     * @param hrInterval - interval to compare with hrtime
      */
     constructor(interval, hrInterval) {
         super();
@@ -17,9 +17,11 @@ class EventLoopMonitor extends EE {
         this._interval = interval || 5000;
         this._eventInterval = null;
         this._loopMonitorInterval = null;
-        if (!Number.isInteger(this._interval) &&
-            this._interval <= 100 &&
-            this._interval >= 10
+        if (!Number.isInteger(this._interval) ||
+            !Number.isInteger(this._hrInterval) ||
+            this._interval <= 100 ||
+            this._hrInterval < 10 ||
+            this._hrInterval >= 100
         ) throw new Error('Interval should be positive integer, in range 10-100');
 
         this.start();

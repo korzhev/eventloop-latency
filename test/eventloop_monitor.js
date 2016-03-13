@@ -1,8 +1,22 @@
 "use strict";
 
-const ELM = require('../index');
+const ELM = require('../index'),
+    should = require('chai').should(),
+    expect = require('chai').expect;
 
 describe('Eventloop latency', function() {
+
+    describe('#constructor()', function() {
+        it('should create monior', function() {
+            let elm = new ELM(1000, 10);
+            elm.should.be.instanceOf(ELM);
+            expect(()=>{new ELM('10h', 10);}).to.throw(Error);
+            expect(()=>{new ELM(1000, '10');}).to.throw(Error);
+            expect(()=>{new ELM(1000, 1);}).to.throw(Error);
+            expect(()=>{new ELM(100, 20);}).to.throw(Error);
+        });
+    });
+
 
     describe('#stop()', function() {
         it('should stop monior, and clear intervals', function() {
@@ -17,12 +31,12 @@ describe('Eventloop latency', function() {
 
     describe('#start()', function() {
         it('should start monitor and emit soon "data" event with data obj', function(done) {
-            let elm = new ELM(50);
+            let elm = new ELM(101);
             elm.on('data', function(data) {
-                data.pid.should.be.Number();
-                data.ticks.should.be.Array();
+                data.pid.should.be.a('number');
+                data.ticks.should.be.an('array');
                 data.ticks.length.should.be.above(0);
-                data.ticks[0].should.be.Number();
+                data.ticks[0].should.be.a('number');
                 done();
             })
         });
@@ -47,7 +61,7 @@ describe('Eventloop latency', function() {
                 ];
 
             let testLatency = ELM.prototype._countLatency.call(testData);
-            testLatency.should.deepEqual(resultData);
+            testLatency.should.be.deep.equal(resultData);
         });
     });
 

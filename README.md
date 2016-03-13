@@ -1,11 +1,12 @@
 # eventloop-latency
 
 [![Build Status](https://travis-ci.org/korzhev/eventloop-latency.svg?branch=master)](https://travis-ci.org/korzhev/eventloop-latency)
+[![Coverage Status](https://coveralls.io/repos/github/korzhev/eventloop-latency/badge.svg?branch=master)](https://coveralls.io/github/korzhev/eventloop-latency?branch=master)
 
 This lib is part of [Bronitor](https://github.com/korzhev/bronitor) project. It counts eventloop latency using [process.hrtime](https://nodejs.org/dist/latest-v4.x/docs/api/process.html#process_process_hrtime)
 
 ## Warning
-> Code written using ECMAScript 2015. It won't work on node <= 0.12.
+*Code written using ECMAScript 2015. It tested on node >= 4*
 
 ## Installation
 ```bash

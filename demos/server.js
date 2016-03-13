@@ -2,7 +2,7 @@
 const http = require('http'),
     ELM = require('../index');
 
-const monitoring = new ELM();
+const monitoring = new ELM(5000, 10);
 let response = 'no data';
 
 monitoring.on('data', (data) => {
