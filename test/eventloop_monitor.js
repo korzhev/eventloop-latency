@@ -16,7 +16,7 @@ describe('Eventloop latency', function() {
     });
 
     describe('#start()', function() {
-        it('should start monitor and emit soon "data" event wit data obj', function(done) {
+        it('should start monitor and emit soon "data" event with data obj', function(done) {
             let elm = new ELM(50);
             elm.on('data', function(data) {
                 data.pid.should.be.Number();
@@ -30,15 +30,16 @@ describe('Eventloop latency', function() {
 
     describe('#_countLatency()', function() {
         it('should return array with latency', function() {
-            const testData = {
+            const HRI = 10,
+                testData = {
                     latency: [],
+                    _hrInterval: HRI,
                     _ticks:[
                     [0, 1e5],
                     [0, 2e5],
                     [1, 1e5],
                     [3, 3e5]
                 ]},
-                HRI = 10,
                 resultData = [
                     (2e5 - 1e5 - HRI*1e6)/1e3,
                     (1e9 + 1e5 - 2e5 - HRI*1e6)/1e3,

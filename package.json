@@ -3,12 +3,16 @@
   "description": "NodeJS eventloop latency monitor",
   "version": "1.0.0",
   "devDependencies": {
+    "coveralls": "^2.11.8",
+    "istanbul": "^0.4.2",
     "mocha": "^2.4.5",
+    "mocha-lcov-reporter": "^1.2.0",
     "should": "^8.2.2"
   },
   "main": "index.js",
   "scripts": {
-    "test": "mocha --require=should"
+    "test": "mocha --require=should",
+    "test-travis": "./node_modules/istanbul/lib/cli.js cover ./node_modules/mocha/bin/_mocha -- -R spec ./test/* --require=should"
   },
   "repository": {
     "type": "git",
