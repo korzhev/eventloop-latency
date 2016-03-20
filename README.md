@@ -16,9 +16,9 @@ $ npm install eventloop-latency
 ## Usage
 ```js
 const EL = require('eventloop-latency'),
-	iterval = 5000, 
-	hrIntreval = 10, 
-	monitoring = new EL(interval, hrInteral);
+	interval = 5000, 
+	hrInterval = 10, 
+	monitoring = new EL(interval, hrInterval);
    
 monitoring.on('data', (data) => {
    console.log(data); // {"pid": 13424, "ticks": [-49, -27, ..., 144, 923]}
@@ -31,7 +31,7 @@ monitoring.on('data', (data) => {
  - **hrIntreval** - interval in *ms* using to count latency, should be in range 10-100, optional, defaults to 10 *ms*
  - **"data" event** - returns object:
 	 - **pid** - is process id
-	 - **ticks** - array of latency in *?s*(microseconds, 10e?6 s) during the **interval**
+	 - **ticks** - array of latency in *µs*(microseconds, 10e-6 s) during the **interval**
 
 ## Examples
 You can see small example in **demos/server.js**. Run it:

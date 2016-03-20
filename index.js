@@ -17,14 +17,18 @@ class EventLoopMonitor extends EE {
         this._interval = interval || 5000;
         this._eventInterval = null;
         this._loopMonitorInterval = null;
+
+        this._validateInteval();
+        this.start();
+    }
+
+    _validateInteval() {
         if (!Number.isInteger(this._interval) ||
             !Number.isInteger(this._hrInterval) ||
             this._interval <= 100 ||
             this._hrInterval < 10 ||
             this._hrInterval >= 100
         ) throw new Error('Interval should be positive integer, in range 10-100');
-
-        this.start();
     }
 
     /**
