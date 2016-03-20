@@ -2,6 +2,7 @@
 
 [![Build Status](https://travis-ci.org/korzhev/eventloop-latency.svg?branch=master)](https://travis-ci.org/korzhev/eventloop-latency)
 [![Coverage Status](https://coveralls.io/repos/github/korzhev/eventloop-latency/badge.svg?branch=master)](https://coveralls.io/github/korzhev/eventloop-latency?branch=master)
+[![Code Climate](https://codeclimate.com/github/korzhev/eventloop-latency/badges/gpa.svg)](https://codeclimate.com/github/korzhev/eventloop-latency)
 
 This lib is part of [Bronitor](https://github.com/korzhev/bronitor) project. It counts eventloop latency using [process.hrtime](https://nodejs.org/dist/latest-v4.x/docs/api/process.html#process_process_hrtime)
 
