@@ -6,8 +6,10 @@
 
 This lib is part of [Bronitor](https://github.com/korzhev/bronitor) project. It counts eventloop latency using [process.hrtime](https://nodejs.org/dist/latest-v4.x/docs/api/process.html#process_process_hrtime)
 
-## Warning
-*Code written using ECMAScript 2015. It tested on node >= 4*
+## Requirements
+**Code written using ECMAScript 2015. It tested on node >= 4**
+
+Use babel if, you want to use it on node < 4
 
 ## Installation
 ```bash
@@ -21,16 +23,27 @@ const EL = require('eventloop-latency'),
 	hrInterval = 10, 
 	monitoring = new EL(interval, hrInterval);
    
+monitoring.start(true);   
 monitoring.on('data', (data) => {
    console.log(data); // {"pid": 13424, "ticks": [-49, -27, ..., 144, 923]}
 });
+monitoring.stop();
+  
+monitoring.start();
+setInterval(() => {
+   console.log(monitoring.countLatency()); // {"pid": 13424, "ticks": [-49, -27, ..., 144, 923]}
+}, 1000) 
 ```
 
 ## Docs
- - **monitoring** - main object, eventemitter
- - **iterval** - interval in *ms* for emitting **'data' event**, optional, defaults to 5000 *ms*
- - **hrIntreval** - interval in *ms* using to count latency, should be in range 10-100, optional, defaults to 10 *ms*
- - **"data" event** - returns object:
+- **monitoring** - main object, eventemitter, takes two options:
+    - **iterval** - interval in *ms* for emitting **'data' event**, optional, defaults to 5000 *ms*
+    - **hrIntreval** - interval in *ms* using to count latency, should be in range 10-100, optional, defaults to 10 *ms*
+- **start()** - , takes option:
+    - **enableEmit** - 
+- **stop()** -
+- **countLatency()** -    
+- **"data" event** - returns object:
 	 - **pid** - is process id
 	 - **ticks** - array of latency in *µs*(microseconds, 10e-6 s) during the **interval**
 

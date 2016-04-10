@@ -5,6 +5,7 @@ const EE = require('events').EventEmitter,
 
 class EventLoopMonitor extends EE {
     /**
+     * @constructor
      * @param interval - interval between two events "data"
      * @param hrInterval - interval to compare with hrtime
      */
@@ -19,9 +20,12 @@ class EventLoopMonitor extends EE {
         this._loopMonitorInterval = null;
 
         this._validateInteval();
-        this.start();
     }
 
+    /**
+     *
+     * @private
+     */
     _validateInteval() {
         if (!Number.isInteger(this._interval) ||
             !Number.isInteger(this._hrInterval) ||
@@ -34,35 +38,52 @@ class EventLoopMonitor extends EE {
     /**
      * finding diff between 2 hrtime
      */
-    _countLatency() {
+    countLatency() {
+        this.latency.length = 0;
         this._ticks.forEach((hrTick, i) => {
                 if (i === 0) return;
-                this.latency.push(Math.floor((
+                let latencyItem = Math.floor((
                     hrTick[0] * 1e9 + hrTick[1] -
                     ( this._ticks[i - 1][0] * 1e9 + this._ticks[i - 1][1] )
                     - this._hrInterval * 1e6 ) / 1e3
-                ));
+                );
+                if (latencyItem < 0) return;
+                this.latency.push(latencyItem);
             }
         );
+        this._ticks.length = 0;
+        this._time = process.hrtime();
         return this.latency;
     }
 
-    start () {
-        this._loopMonitorInterval = setInterval(() => {
-            this._ticks.push(process.hrtime(this._time));
-        }, this._hrInterval);
+    /**
+     *
+     * @private
+     */
+    _startToEmmit() {
         this._eventInterval = setInterval(() => {
             this.emit('data', {
                     pid: PID,
-                    ticks: this._countLatency()
+                    ticks: this.countLatency()
                 }
             );
-            this._ticks.length = 0;
-            this.latency.length = 0;
-            this._time = process.hrtime();
         }, this._interval);
     }
 
+    /**
+     *
+     * @param enableEmit
+     */
+    start(enableEmit) {
+        this._loopMonitorInterval = setInterval(() => {
+            this._ticks.push(process.hrtime(this._time));
+        }, this._hrInterval);
+        if (enableEmit) this._startToEmmit();
+    }
+
+    /**
+     *
+     */
     stop() {
         clearInterval(this._loopMonitorInterval);
         clearInterval(this._eventInterval);
