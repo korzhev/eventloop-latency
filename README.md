@@ -26,7 +26,7 @@ const EL = require('eventloop-latency'),
    
 monitoring.start(true);   
 monitoring.on('data', (data) => {
-   console.log(data); // {"pid": 13424, "ticks": [-49, -27, ..., 144, 923]}
+  console.log(data); // {"pid": 13424, "ticks": [-49, -27, ..., 144, 923]}
 });
 monitoring.stop();
   
