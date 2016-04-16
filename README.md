@@ -26,13 +26,13 @@ const EL = require('eventloop-latency'),
    
 monitoring.start(true);   
 monitoring.on('data', (data) => {
-  console.log(data); // {"pid": 13424, "ticks": [-49, -27, ..., 144, 923]}
+  console.log(data); // {"pid": 13424, "ticks": [49, 27, ..., 144, 923]}
 });
 monitoring.stop();
   
 monitoring.start();
 setInterval(() => {
-   console.log(monitoring.countLatency()); // {"pid": 13424, "ticks": [-49, -27, ..., 144, 923]}
+   console.log(monitoring.countLatency()); // [149, 7, ..., 14, 92]
 }, 1000) 
 ```
 
@@ -51,7 +51,7 @@ setInterval(() => {
 ## Examples
 You can see small example in **demos/server.js**. Run it:
 ```bash
-$ node ./demos/server.js
+$ npm run-script demo
 ```
 
 ## Tests

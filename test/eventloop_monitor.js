@@ -5,7 +5,6 @@ const chai = require('chai');
 const expect = chai.expect;
 
 chai.should();
-chai.use(require('chai-interface'));
 
 describe('Eventloop latency', () => {
   describe('#constructor()', () => {
@@ -16,40 +15,43 @@ describe('Eventloop latency', () => {
       expect(() => {new ELM(1000, '10');}).to.throw(Error);
       expect(() => {new ELM(1000, 1);}).to.throw(Error);
       expect(() => {new ELM(100, 20);}).to.throw(Error);
+      expect(() => {new ELM(100, 200);}).to.throw(Error);
     });
   });
 
 
   describe('#stop()', () => {
-    it('should stop monior, and clear intervals', () => {
-      const elm = new ELM();
+    it('should stop monior, and clear intervals', (done) => {
+      const elm = new ELM(1000, 10);
       elm.start(true);
-      elm.stop();
-      elm._ticks.length.should.equal(0);
-      elm.latency.length.should.equal(0);
-      elm._loopMonitorInterval._idleTimeout.should.equal(-1);
-      elm._eventInterval._idleTimeout.should.equal(-1);
+      setTimeout(() => {
+        elm.stop();
+        elm._ticks.length.should.equal(0);
+        elm.latency.length.should.equal(0);
+        elm._loopMonitorInterval._idleTimeout.should.equal(-1);
+        elm._eventInterval._idleTimeout.should.equal(-1);
+        done();
+      }, 30);
     });
   });
 
   describe('#start()', () => {
     it('should start monitor and emit soon "data" event with data obj', (done) => {
-      const elm = new ELM(101);
+      const elm = new ELM(1000, 10);
+      elm._interval = 50;
       elm.start(true);
-      elm.on('data', function (data) {
-        data.should.have.interface({
-          pid: Number,
-          ticks: Array,
-        });
-        data.ticks.length.should.be.above(0);
-        data.ticks[0].should.be.a('number');
+      elm.once('data', (data) => {
+        data.should.be.instanceof(Array);
+        data.length.should.be.above(0);
+        data.length.should.be.below(5);
+        data[0].should.be.a('number');
         elm.stop();
         done();
       });
     });
 
     it('should start monitor, and wait for #countLatency()', (done) => {
-      const elm = new ELM(101);
+      const elm = new ELM(1000, 10);
       elm.start();
       setTimeout(() => {
         elm._ticks.should.be.instanceof(Array);
@@ -78,7 +80,7 @@ describe('Eventloop latency', () => {
       };
       const resultData = [
         (1e9 + 1e5 - 2e5 - HRI * 1e6) / 1e3,
-        (3e9 + 3e5 - 1e9 - 1e5 - HRI * 1e6) / 1e3
+        (3e9 + 3e5 - 1e9 - 1e5 - HRI * 1e6) / 1e3,
       ];
 
       const testLatency = ELM.prototype.countLatency.call(testData);

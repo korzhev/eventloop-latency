@@ -1,7 +1,6 @@
 'use strict';
 
 const EE = require('events').EventEmitter;
-const PID = process.pid;
 
 class EventLoopMonitor extends EE {
   /**
@@ -14,7 +13,7 @@ class EventLoopMonitor extends EE {
     this._time = process.hrtime();
     this.latency = [];
     this._ticks = [];
-    this._hrInterval = hrInterval || 10;
+    this._hrInterval = hrInterval || 100;
     this._interval = interval || 5000;
     this._eventInterval = null;
     this._loopMonitorInterval = null;
@@ -28,10 +27,10 @@ class EventLoopMonitor extends EE {
    */
   _validateInteval() {
     if (!Number.isInteger(this._interval) || !Number.isInteger(this._hrInterval) ||
-      this._interval <= 100 ||
+      this._interval < 1000 ||
       this._hrInterval < 10 ||
-      this._hrInterval >= 100
-    ) throw new Error('Interval should be positive integer, in range 10-100');
+      this._hrInterval >= 1000
+    ) throw new Error('Interval should be integer, first one > 1000, second one in range 10-1000');
   }
 
   /**
@@ -60,10 +59,7 @@ class EventLoopMonitor extends EE {
    */
   _startToEmmit() {
     this._eventInterval = setInterval(() => {
-      this.emit('data', {
-        pid: PID,
-        ticks: this.countLatency(),
-      });
+      this.emit('data', this.countLatency());
     }, this._interval);
   }
 
