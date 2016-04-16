@@ -7,6 +7,6 @@ node_js:
   - "4.1"
   - "4.0"
 script:
-  - npm run-script test-travis
+  - npm run-script coverage
 after_script:
   - cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js

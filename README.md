@@ -14,7 +14,7 @@ Use babel if, you want to use it on node < 4
 
 ## Installation
 ```bash
-$ npm install eventloop-latency
+$ npm i eventloop-latency --production
 ```
 
 ## Usage
@@ -26,7 +26,7 @@ const EL = require('eventloop-latency'),
    
 monitoring.start(true);   
 monitoring.on('data', (data) => {
-  console.log(data); // {"pid": 13424, "ticks": [49, 27, ..., 144, 923]}
+  console.log(data); // [49, 27, ..., 144, 923]
 });
 monitoring.stop();
   
@@ -44,9 +44,7 @@ setInterval(() => {
     - **enableEmit** - if *true*, **monitoring** will emit **"data" event**, else function **countLatency()** is used to get latency info
 - **stop()** - function, that stop monitoring
 - **countLatency()** - function, that return array with latency
-- **"data" event** - returns object:
-	 - **pid** - is process id
-	 - **ticks** - array of latency in *µs*(microseconds, 10e-6 s) during the **interval**
+- **"data" event** - returns array of latency in *µs*(microseconds, 10e-6 s) during the **interval**
 
 ## Examples
 You can see small example in **demos/server.js**. Run it:
